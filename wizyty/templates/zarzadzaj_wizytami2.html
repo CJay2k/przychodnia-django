@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load auth_extras %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <a href="/wizyty/oczekujace" class="btn btn-secondary">Oczekujące</a>
+        {% if request.user|has_group:"pacjent" %}
+            <a href="/wizyty/dodaj" class="btn btn-secondary">Dodaj</a>
+        {% endif %}{#        <a href="przeloz" class="btn btn-secondary">Przełóż</a>#}
+        <a href="/wizyty/zarzadzaj" class="btn btn-primary">Zarządzaj</a>
+        <a href="/wizyty/historia" class="btn btn-secondary">Historia</a>
+    </div>
+    <br>
+    <div style="text-align: center;">
+
+    {% if obj.lekarz.uzytkownik.id == user.id and obj.status == 'Oczekująca'%}
+        <form class="login" method="GET" action="{% url 'account_login' %}">
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+        </form>
+        <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%; text-align: center;">
+            <br>
+            <h4>Pacjent: {{ obj.pacjent.first_name }} {{ obj.pacjent.last_name }} </h4>
+            <br><b>Data:</b> {{ obj.data }}
+            <br><b>Godzina:</b> {{ obj.godzina }}
+            <br><b>Opis:</b> {{ obj.opis }}
+            <br><b>Status:</b> {{ obj.status }}
+            <br><b>Recepta:</b>
+            <form method="post"> {% csrf_token %}
+
+
+                <input type="text" name="recepta" style="width: 80%; height: 100px"><br>
+
+                    <p><button type="submit" class="btn-sm btn-success">Zakończ wizytę</button>
+            </form>
+            <br>
+        </div>
+        {% elif obj.status != 'Oczekująca'%}
+        <div id="wiadomosc" style="text-align: center"><h4>Wizyta została już zakończona lub odwołana</h4></div>
+        {% else %}
+        <div id="wiadomosc" style="text-align: center"><h4>Wizyta należy do innego lekarza</h4></div>
+    {% endif %}
+        <div id="wiadomosc" style="text-align: center">{{ wiadomosc|safe }}</div>
+    </div>
+{% endblock %}

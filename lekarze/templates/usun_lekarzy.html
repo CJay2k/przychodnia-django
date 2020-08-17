@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+    <div style="text-align: center;">
+    <a href="wyswietl" class="btn btn-secondary">Lista lekarzy</a>
+    <a href="dodaj" class="btn btn-secondary">Dodaj lekarza</a>
+    <a href="usun" class="btn btn-primary">Usuń lekarza</a>
+</div>
+    <br>
+    <div style="text-align: center;">
+        {% for object in object_list %}
+            {% if object.aktywny %}
+            <form method="post" action="{% url 'lekarze_delete' object.pk %}"> {% csrf_token %}
+               <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%">
+                   <br>
+                    <h3>Lekarz: {{ object.uzytkownik.first_name }} {{ object.uzytkownik.last_name }}
+
+                    </h3>
+                    <p>Specjalizacja: {{ object.specjalizacja }}</p>
+                    <p>Numer gabinetu: {{ object.numer_gabinetu }}</p>
+                         <p><button type="submit" class="btn-sm btn-danger">Usuń lekarza</button></p>
+                    </p>
+                    <br>
+                </div>
+            </form>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

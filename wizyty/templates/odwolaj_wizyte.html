@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load auth_extras %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <a href="/wizyty/oczekujace" class="btn btn-secondary">Oczekujące</a>
+{% if request.user|has_group:"pacjent"%}
+        <a href="/wizyty/dodaj" class="btn btn-secondary">Dodaj</a>
+        {% endif %}{#        <a href="przeloz" class="btn btn-secondary">Przełóż</a>#}
+    {% if request.user|has_group:"lekarz"%}
+        <a href="/wizyty/zarzadzaj" class="btn btn-primary">Zarzadzaj</a>
+        {% else %}
+        <a href="/wizyty/odwolaj" class="btn btn-primary">Odwołaj</a>
+    {% endif %}
+        <a href="/wizyty/historia" class="btn btn-secondary">Historia</a>
+    </div>
+    <br>
+    <div style="text-align: center;">
+
+        <form class="login" method="GET" action="{% url 'account_login' %}">
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+        </form>
+
+        {% for object in object_list %}
+
+            <form method="post" action="{% url 'wizyty_odwolaj' object.pk %}"> {% csrf_token %}
+
+                {% if request.user.is_superuser and object.status == 'Oczekująca' %}
+                    <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%; text-align: center;">
+                        <style>
+                            #wiadomosc {
+                                display: none;
+                            }
+                        </style>
+                            <br>
+                            <h4>Lekarz: {{ object.lekarz.uzytkownik.first_name }} {{ object.lekarz.uzytkownik.last_name }}</h4>
+                        <h4>Pacjent: {{ object.pacjent.first_name }} {{ object.pacjent.last_name }} </h4>
+                            <br><b>Data:</b> {{ object.data }}
+                            <br><b>Godzina:</b> {{ object.godzina }}
+                            <br><b>Numer gabinetu:</b> {{ object.lekarz.numer_gabinetu }}
+                            <br><b>Opis:</b> {{ object.opis }}
+                            <br><b>Status:</b> {{ object.status }}
+                        <p><button type="submit" class="btn-sm btn-warning">Odwołaj wizytę</button></p>
+                    </div>
+
+
+            {% elif request.user|has_group:"pacjent" and object.pacjent.id == user.id and object.status == 'Oczekująca'%}
+                        <style>
+                            #wiadomosc {
+                                display: none;
+                            }
+                        </style>
+                        <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%; text-align: center;">
+                            <br>
+                            <h4>Lekarz: {{ object.lekarz.uzytkownik.first_name }} {{ object.lekarz.uzytkownik.last_name }}</h4>
+                            <br><b>Data:</b> {{ object.data }}
+                            <br><b>Godzina:</b> {{ object.godzina }}
+                            <br><b>Numer gabinetu:</b> {{ object.lekarz.numer_gabinetu }}
+                            <br><b>Opis:</b> {{ object.opis }}
+
+                        <p><button type="submit" class="btn-sm btn-warning">Odwołaj wizytę</button></p>
+                    </div>
+                                    {% elif request.user|has_group:"lekarz" and object.lekarz.uzytkownik.id == user.id and object.status == 'Oczekująca'%}
+<style>
+                            #wiadomosc {
+                                display: none;
+                            }
+                        </style>
+                        <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%; text-align: center;">
+                            <br>
+                            <h4>Pacjent: {{ object.pacjent.first_name }} {{ object.pacjent.last_name }}</h4>
+                    <br><b>Data:</b> {{ object.data }}
+                    <br><b>Godzina:</b> {{ object.godzina }}
+                    <br><b>Opis:</b> {{ object.opis }}
+
+                        <p><button type="submit" class="btn-sm btn-warning">Odwołaj wizytę</button></p>
+                    </div>
+                {% endif %}
+
+            </div>
+            </form>
+        {% endfor %}
+    <div id="wiadomosc" style="text-align: center">{{ wiadomosc|safe }}</div>
+    </div>
+{% endblock %}

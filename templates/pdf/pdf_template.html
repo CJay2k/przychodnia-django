@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+{% load auth_extras %}
+
+{% block content %}
+<head>
+    <meta charset="utf-8">
+
+    <title>Przychodnia lekarska</title>
+
+
+</head>
+    <div style="text-align: center;">
+        <br>
+        <h2>Raport przychodni dla wizyt z dnia: {{ data }}</h2>
+        {% for object in object_list %}
+            {% if object.status != 'Oczekująca'%}  {% comment %}and object.data == data{% endcomment %}
+                <style>
+                    #wiadomosc {
+                      display: none;
+                    }
+                </style>
+
+             <div style="margin-top: 1%; margin-left: 30%; margin-right: 30%">
+             <br>
+                    <h4>Lekarz: {{ object.lekarz.uzytkownik.first_name }} {{ object.lekarz.uzytkownik.last_name }}</h4>
+                 <h4>Pacjent: {{ object.pacjent.first_name }} {{ object.pacjent.last_name }} </h4>
+                    <br><b>Data:</b> {{ object.data }}
+                    <br><b>Godzina:</b> {{ object.godzina }}
+                    <br><b>Numer gabinetu:</b> {{ object.lekarz.numer_gabinetu }}
+                    <br><b>Opis:</b> {{ object.opis }}
+                    <br><b>Status:</b> {{ object.status }}
+                 {% if object.status == 'Zakończona'%}
+                    <br><b>Recepta:</b> {{ object.recepta }}
+                     {% endif %}
+             <br><br>
+                 </div>
+
+            {% endif %}
+
+        {% endfor %}
+        <div id="wiadomosc">{{ wiadomosc|safe }}</div>
+
+    </div>
+{% endblock %}
+</html>

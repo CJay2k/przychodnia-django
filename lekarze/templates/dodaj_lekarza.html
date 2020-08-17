@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div style="text-align: center;">
+    <a href="wyswietl" class="btn btn-secondary">Lista lekarzy</a>
+    <a href="dodaj" class="btn btn-primary">Dodaj lekarza</a>
+    <a href="usun" class="btn btn-secondary">Usuń lekarza</a>
+</div>
+    <div style="width: 30%; margin: 0 auto;">
+    <br>
+        {{ wiadomosc|safe }}
+    <h3>Dodaj lekarza</h3>
+    <form method="post"> {% csrf_token %}
+        {{ form|crispy }}
+        <div style="text-align: center;">
+            <button class="btn btn-primary" type="submit">Dodaj</button>
+        </div>
+    </form>
+    </div>
+{% endblock %}

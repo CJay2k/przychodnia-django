@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load auth_extras %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <a href="/wizyty/oczekujace" class="btn btn-primary">Oczekujące</a>
+        {% if request.user|has_group:"pacjent"%}
+        <a href="/wizyty/dodaj" class="btn btn-secondary">Dodaj</a>
+        {% endif %}
+{#        <a href="przeloz" class="btn btn-secondary">Przełóż</a>#}
+        {% if request.user|has_group:"lekarz"%}
+        <a href="/wizyty/zarzadzaj" class="btn btn-secondary">Zarzadzaj</a>
+        {% else %}
+        <a href="/wizyty/odwolaj" class="btn btn-secondary">Odwołaj</a>
+    {% endif %}
+        <a href="/wizyty/historia" class="btn btn-secondary">Historia</a>
+    </div>
+    <div style="text-align: center;">
+        <br>
+
+        {% for object in object_list %}
+            {% if request.user.is_superuser and object.status == 'Oczekująca'%}
+                <style>
+                    #wiadomosc {
+                      display: none;
+                    }
+                </style>
+
+             <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%">
+             <br>
+                    <h4>Lekarz: {{ object.lekarz.uzytkownik.first_name }} {{ object.lekarz.uzytkownik.last_name }}</h4>
+                 <h4>Pacjent: {{ object.pacjent.first_name }} {{ object.pacjent.last_name }} </h4>
+                    <br><b>Data:</b> {{ object.data }}
+                    <br><b>Godzina:</b> {{ object.godzina }}
+                    <br><b>Numer gabinetu:</b> {{ object.lekarz.numer_gabinetu }}
+                    <br><b>Opis:</b> {{ object.opis }}
+             <br><br>
+                 </div>
+            {% elif request.user|has_group:"pacjent" and object.pacjent.id == user.id and object.status == 'Oczekująca'%}
+                <style>
+                    #wiadomosc {
+                      display: none;
+                    }
+                </style>
+
+                <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%">
+                <br>
+                    <h4>Lekarz: {{ object.lekarz.uzytkownik.first_name }} {{ object.lekarz.uzytkownik.last_name }}</h4>
+                    <br><b>Data:</b> {{ object.data }}
+                    <br><b>Godzina:</b> {{ object.godzina }}
+                    <br><b>Numer gabinetu:</b> {{ object.lekarz.numer_gabinetu }}
+                    <br><b>Opis:</b> {{ object.opis }}
+                <br><br>
+                 </div>
+                {% elif request.user|has_group:"lekarz" and object.lekarz.uzytkownik.id == user.id and object.status == 'Oczekująca'%}
+                    <style>
+                    #wiadomosc {
+                      display: none;
+                    }
+                </style>
+
+                <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%">
+                <br>
+                    <h4>Pacjent: {{ object.pacjent.first_name }} {{ object.pacjent.last_name }}</h4>
+                    <br><b>Data:</b> {{ object.data }}
+                    <br><b>Godzina:</b> {{ object.godzina }}
+                    <br><b>Opis:</b> {{ object.opis }}
+                <br><br>
+                 </div>
+            {% endif %}
+
+        {% endfor %}
+        <div id="wiadomosc">{{ wiadomosc|safe }}</div>
+
+    </div>
+{% endblock %}

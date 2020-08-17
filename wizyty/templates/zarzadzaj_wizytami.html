@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load auth_extras %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <a href="/wizyty/oczekujace" class="btn btn-secondary">Oczekujące</a>
+{% if request.user|has_group:"pacjent"%}
+        <a href="/wizyty/dodaj" class="btn btn-secondary">Dodaj</a>
+        {% endif %}{#        <a href="przeloz" class="btn btn-secondary">Przełóż</a>#}
+        <a href="/wizyty/zarzadzaj" class="btn btn-primary">Zarządzaj</a>
+        <a href="/wizyty/historia" class="btn btn-secondary">Historia</a>
+    </div>
+    <br>
+    <div style="text-align: center;">
+
+        <form class="login" method="GET" action="{% url 'account_login' %}">
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+        </form>
+
+        {% for object in object_list %}
+            {% if request.user|has_group:"lekarz" and object.lekarz.uzytkownik.id == user.id and object.status == 'Oczekująca'%}
+            <form method="post" action="{% url 'wizyty_zarzadzaj' object.pk %}"> {% csrf_token %}
+
+                    <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%; text-align: center;">
+                        <style>
+                            #wiadomosc {
+                                display: none;
+                            }
+                        </style>
+                            <br>
+                        <h4>Pacjent: {{ object.pacjent.first_name }} {{ object.pacjent.last_name }} </h4>
+                            <br><b>Data:</b> {{ object.data }}
+                            <br><b>Godzina:</b> {{ object.godzina }}
+                            <br><b>Opis:</b> {{ object.opis }}
+                            <br><b>Status:</b> {{ object.status }}
+                        <p><button type="submit" class="btn-sm btn-warning">Odwołaj wizytę</button>
+                        <a href="/wizyty/zarzadzaj/{{object.pk}}"><button class="btn-sm btn-success">Rozpocznij wizytę</button></a></p>
+                    </div>
+
+
+            </form>
+            {% endif %}
+        {% endfor %}
+    <div id="wiadomosc" style="text-align: center">{{ wiadomosc|safe }}</div>
+    </div>
+{% endblock %}

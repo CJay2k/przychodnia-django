@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div style="text-align: center;">
+        <a href="/wizyty/oczekujace" class="btn btn-secondary">Oczekujące</a>
+        <a href="/wizyty/dodaj" class="btn btn-primary">Dodaj</a>
+        {#        <a href="../../przeloz" class="btn btn-secondary">Przełóż</a>#}
+        <a href="/wizyty/odwolaj" class="btn btn-secondary">Odwołaj</a>
+        <a href="/wizyty/historia" class="btn btn-secondary">Historia</a>
+    </div>
+    <br>
+    <div style="width: 30%; margin: 0 auto;">
+    {% if lekarz_object.aktywny %}
+        {{ wiadomosc|safe }}
+{% if wyswietl %}
+        {% if wolne_godziny %}
+            <b>Lista dostępnych godzin do wybranego specjalisty na wybraną datę to:</b>
+            <br>
+            {% for godzina in wolne_godziny %}
+                {{ godzina }};
+
+            {% endfor %}
+        {% else %}
+            <b>Brak wolnych godzin na wybrany termin do wybranego specjalisty</b>
+            <br>
+        {% endif %}
+
+    {% endif %}
+        <form method="post"> {% csrf_token %}
+            {{ form|crispy }}
+            <div style="text-align: center;">
+                <button class="btn btn-primary" type="submit">Dodaj</button>
+            </div>
+        </form>
+    </div>
+    {% else %}
+        <h4>Nie można umówić nowych wizyt do wybranego specjalisty</h4>
+    {% endif %}
+{% endblock %}

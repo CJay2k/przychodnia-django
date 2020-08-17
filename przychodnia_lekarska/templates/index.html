@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+<!-- Page Header -->
+{% block header %}
+<header class="masthead" style="background-image: url({% static 'img/home-bg.jpg' %})">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Przychodnia Medyczna</h1>
+                    <span class="subheading">Od Lekarzy dla pacjentów</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+
+<!-- Main Content -->
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-preview">
+                <a href="/">
+                    <h2 class="post-title">
+                        Życzenia świąteczne
+                    </h2>
+                    <h3 class="post-subtitle">
+                        Szanowni Państwo,
+
+                        pragniemy życzyć Państwu zdrowych, spokojnych, pełnych radości Świąt Bożego Narodzenia,
+                        spędzonych w gronie najbliższych. Niech będzie to czas refleksji i odpoczynku od zgiełku
+                        codzienności. Poczujcie Państwo Magię Świąt.
+                        <br><br>
+                        Dyrekcja i Pracownicy
+                        Centrum Medycznego Medyk
+
+                    </h3>
+                </a>
+                <p class="post-meta">Umieszczone przez
+                    <a href="#">NazwaPrzychodni</a>
+                    23 Grudnia, 2019</p>
+            </div>
+            <hr>
+            <div class="post-preview">
+                <a href="/">
+                    <h2 class="post-title">
+                        Uwaga! Zmiana godzin pracy przychodni
+                    </h2>
+                    <h2 class="post-subtitle">
+                        Szanowni Państwo,<br><br>
+
+                        W związku ze zbliżającym się Świętami Bożego Narodzenia i Nowym Rokiem informujemy o
+                        następujących zmianach w godzinach pracy przychodni CM MEDYK:<br>
+
+                        24 grudnia:<br>
+
+                        Przychodnia przy ul. Szopena 1 – do godziny 18:00<br>
+
+                        Pozostałe przychodnie otwarte do godziny 14:00.<br>
+
+                    </h2>
+                </a>
+                <p class="post-meta">Umieszczone przez
+                    <a href="#">NazwaPrzychodni</a>
+                    06 Stycznia, 2020</p>
+            </div>
+            <hr>
+            <div class="post-preview">
+                <a href="/">
+                    <h2 class="post-title">
+                        Konferencja dla pielęgniarek
+                    </h2>
+                    <h3 class="post-subtitle">
+                        Serdecznie zapraszamy na XIV już konferencję dla pielęgniarek dializacyjnych. Tegoroczny temat:
+                        „Pacjent ze schyłkową niewydolnością nerek – rożne perspektywy”.
+
+                        <br><br>Poniżej Agenda spotkania. Zapraszamy!
+                    </h3>
+                </a>
+                <p class="post-meta">Umieszczone przez
+                    <a href="#">NazwaPrzychodni</a>
+                    10 Stycznia, 2020</p>
+            </div>
+            <hr>
+
+
+            <!-- Pager -->
+            <div class="clearfix">
+                <a class="btn btn-primary float-right" href="#">Starsze wiadomości &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div style="text-align: center;">
+       <a href="/wizyty/oczekujace" class="btn btn-secondary">Oczekujące</a>
+        <a href="/wizyty/dodaj" class="btn btn-primary">Dodaj</a>
+{#        <a href="przeloz" class="btn btn-secondary">Przełóż</a>#}
+        <a href="/wizyty/odwolaj" class="btn btn-secondary">Odwołaj</a>
+        <a href="/wizyty/historia" class="btn btn-secondary">Historia</a>
+    </div>
+    <br>
+    <div style="text-align: center">
+    <h3>Lekarze:</h3>
+    {% for object in object_list %}
+        {% if object.aktywny == True %}
+            <div style="border: rgba(0,0,0,0.17) solid; margin-top: 1%; margin-left: 30%; margin-right: 30%">
+            <br>
+                <h3>{{ object.uzytkownik.first_name }} {{ object.uzytkownik.last_name }}</h3>
+                <p><b>Specjalizacja:</b> {{ object.specjalizacja }}</p>
+                <p><b>Numer gabinetu:</b> {{ object.numer_gabinetu }}</p>
+
+
+                <p><a href="dodaj/{{ object.id }}" class="btn-sm btn-primary">Umów się na wizytę</a></p>
+
+            </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
